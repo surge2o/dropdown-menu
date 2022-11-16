@@ -1,5 +1,8 @@
+import 'package:contactlist/providers/contact_provider.dart';
+import 'package:contactlist/widgets/favorite_widge.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({super.key});
@@ -9,6 +12,13 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    getContact();
+  }
+
+  getContact() async => await context.read<ProviderContact>().fetchContact();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -35,6 +45,12 @@ class _HomeWidgetState extends State<HomeWidget> {
               itemCount: 10,
               itemBuilder: (context, index) {
                 return ListTile(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: ((context) {
+                      return const FavoriteWidget();
+                    })));
+                  },
                   leading: Image.asset(
                     'assets/images/user.png',
                     height: 35,
@@ -44,7 +60,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     style: TextStyle(fontSize: 10),
                   ),
                   subtitle: const Text('+234 706 691 5138'),
-                  trailing: Icon(Icons.favorite),
+                  trailing: const Icon(Icons.favorite),
                   // trailing: DropdownButton(items: [
                   //   DropdownMenuItem(
                   //     child: const Text('view contacts'),
