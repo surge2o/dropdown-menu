@@ -17,6 +17,16 @@ class _HomeScreenState extends State<HomeScreen> {
     const FavoriteWidget(),
     const ProfileWidget()
   ];
+  final List<Widget> appbarOption = [
+    const Text(
+      'Contacts',
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    ),
+    const Text('Favorite',
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+    const Text('Profile',
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+  ];
 
   setindex(int index) {
     setState(() {
@@ -40,10 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'profile')
           ]),
       appBar: AppBar(
-        title: const Text(
-          'Contacts',
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        ),
+        title: appbarOption[selectedIndex],
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:contactlist/providers/contact_provider.dart';
-import 'package:contactlist/widgets/favorite_widge.dart';
+import 'package:contactlist/screens/contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -14,13 +14,14 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     getContact();
   }
 
   getContact() async => await context.read<ProviderContact>().fetchContact();
   @override
   Widget build(BuildContext context) {
+    var contact = Provider.of<ProviderContact>(context).apiContacts;
     return SafeArea(
         child: Column(
       children: [
@@ -42,35 +43,36 @@ class _HomeWidgetState extends State<HomeWidget> {
         const Gap(20),
         Expanded(
           child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) {
-                      return const FavoriteWidget();
-                    })));
-                  },
-                  leading: Image.asset(
-                    'assets/images/user.png',
-                    height: 35,
-                  ),
-                  title: const Text(
-                    'Blossom Kim',
-                    style: TextStyle(fontSize: 10),
-                  ),
-                  subtitle: const Text('+234 706 691 5138'),
-                  trailing: const Icon(Icons.favorite),
-                  // trailing: DropdownButton(items: [
-                  //   DropdownMenuItem(
-                  //     child: const Text('view contacts'),
-                  //   ),
-                  //   DropdownMenuItem(
-                  //     child: const Text('favorite'),
-                  //   )
-                  // ], onChanged: (value) {}),
-                );
-              }),
+            itemCount: contact.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: ((context) {
+                    return const ContactScreen();
+                  })));
+                },
+                leading: Image.asset(
+                  'assets/images/user.png',
+                  height: 35,
+                ),
+                title: Text(
+                  contact[index].name,
+                  style: TextStyle(fontSize: 10),
+                ),
+                subtitle: Text(contact[index].phoneNumber),
+                trailing: const Icon(Icons.favorite),
+                // trailing: DropdownButton(items: [
+                //   DropdownMenuItem(
+                //     child: const Text('view contacts'),
+                //   ),
+                //   DropdownMenuItem(
+                //     child: const Text('favorite'),
+                //   )
+                // ], onChanged: (value) {}),
+              );
+            },
+          ),
         )
       ],
     ));
